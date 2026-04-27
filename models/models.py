@@ -5,7 +5,7 @@ from database import Base
 # ------------------ VENTA ------------------
 class Venta(Base):
     __tablename__ = "venta"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_venta = Column(Integer, primary_key=True, index=True)
     cliente = Column(String(100), nullable=False)
@@ -24,7 +24,7 @@ class Venta(Base):
 # ------------------ MAQUINA ------------------
 class Maquina(Base):
     __tablename__ = "maquina"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_maquina = Column(Integer, primary_key=True, index=True)
     num_serie = Column(String(50))
@@ -47,7 +47,7 @@ class Maquina(Base):
 # ------------------ COMPONENTE ------------------
 class Componente(Base):
     __tablename__ = "componente"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_componente = Column(Integer, primary_key=True, index=True)
     id_maquina = Column(Integer, ForeignKey("maquinaria.maquina.id_maquina"))
@@ -69,7 +69,7 @@ class Componente(Base):
 # ------------------ INCIDENCIA ------------------
 class Incidencia(Base):
     __tablename__ = "incidencia"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_incidencia = Column(Integer, primary_key=True, index=True)
     id_maquina = Column(Integer, ForeignKey("maquinaria.maquina.id_maquina"))
@@ -83,7 +83,7 @@ class Incidencia(Base):
 # ------------------ SERVICIO ------------------
 class Servicio(Base):
     __tablename__ = "servicio"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_servicio = Column(Integer, primary_key=True, index=True)
     id_venta = Column(Integer, ForeignKey("maquinaria.venta.id_venta"))
@@ -97,7 +97,7 @@ class Servicio(Base):
 # ------------------ IMPORTE ------------------
 class Importe(Base):
     __tablename__ = "importe"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_importe = Column(Integer, primary_key=True, index=True)
     id_venta = Column(Integer, ForeignKey("maquinaria.venta.id_venta"))
@@ -112,7 +112,7 @@ class Importe(Base):
 # ------------------ INTERVENCION ------------------
 class Intervencion(Base):
     __tablename__ = "intervencion"
-    __table_args__ = {"schema": "maquinaria"}
+    # __table_args__ = {"schema": "maquinaria"}
 
     id_intervencion = Column(Integer, primary_key=True, index=True)
     id_componente = Column(Integer, ForeignKey("maquinaria.componente.id_componente"))
