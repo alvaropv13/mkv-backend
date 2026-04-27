@@ -95,22 +95,23 @@ def login_json(datos: UsuarioLogin, db: Session = Depends(get_db)):
     Este endpoint acepta JSON normal.
     Útil para Flutter.
     """
-    print(f"🔐 Intentando login para usuario: {datos.username}")
+    print(f"🔐 1 - Iniciando login para usuario: {datos.username}")
     
     try:
+        print(f"🔐 2 - Intentando consultar usuario en BD...")
         usuario = db.query(Usuario).filter(
             Usuario.username == datos.username
         ).first()
         
-        print(f"📝 Usuario encontrado en BD: {usuario is not None}")
+        print(f"🔐 3 - Usuario encontrado: {usuario is not None}")
         
         if not usuario:
-            print(f"❌ Usuario no encontrado: {datos.username}")
+            print(f"❌ Usuario NO encontrado: {datos.username}")
             raise HTTPException(status_code=401, detail="Credenciales incorrectas")
         
-        print(f"🔑 Verificando contraseña para: {datos.username}")
+        print(f"🔐 4 - Usuario encontrado: {usuario.username}, verificando contraseña...")
         password_valid = verify_password(datos.password, usuario.password)
-        print(f"✅ Contraseña válida: {password_valid}")
+        print(f"🔐 5 - Contraseña válida: {password_valid}")
         
         if not password_valid:
             print(f"❌ Contraseña incorrecta para: {datos.username}")
@@ -120,6 +121,7 @@ def login_json(datos: UsuarioLogin, db: Session = Depends(get_db)):
             print(f"❌ Usuario inactivo: {datos.username}")
             raise HTTPException(status_code=403, detail="Usuario desactivado")
 
+        print(f"🔐 6 - Generando token para: {datos.username}")
         token = create_access_token({
             "sub": usuario.username,
             "rol": usuario.rol
@@ -134,6 +136,8 @@ def login_json(datos: UsuarioLogin, db: Session = Depends(get_db)):
         }
     except Exception as e:
         print(f"❌ Error en login: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise e
 
 
