@@ -13,8 +13,16 @@ if IS_RAILWAY:
     DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     DB_NAME = os.getenv("DB_NAME", "defaultdb")
     
-    SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?ssl-mode=REQUIRED"
+    # CORREGIDO: sin ssl-mode en la URL, usamos connect_args
+    SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     print("📡 Usando MySQL en Railway (Aiven)")
+    
+    # Configuración SSL para Railway
+    ssl_args = {
+        "ssl": {
+            "ssl-mode": "REQUIRED"
+        }
+    }
 else:
     # En local: usar MySQL local
     DB_USER = "root"
@@ -23,9 +31,18 @@ else:
     DB_NAME = "maquinaria"
     SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
     print("📡 Usando MySQL en local")
+    ssl_args = {}
 
 # Motor de conexión
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True)
+if IS_RAILWAY:
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, 
+        echo=True, 
+        future=True,
+        connect_args=ssl_args
+    )
+else:
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True, future=True)
 
 # Sesión
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
