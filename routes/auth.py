@@ -95,27 +95,46 @@ def login_json(datos: UsuarioLogin, db: Session = Depends(get_db)):
     Este endpoint acepta JSON normal.
     Útil para Flutter.
     """
+    print(f"🔐 Intentando login para usuario: {datos.username}")
+    
+    try:
+        usuario = db.query(Usuario).filter(
+            Usuario.username == datos.username
+        ).first()
+        
+        print(f"📝 Usuario encontrado en BD: {usuario is not None}")
+        
+        if not usuario:
+            print(f"❌ Usuario no encontrado: {datos.username}")
+            raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+        
+        print(f"🔑 Verificando contraseña para: {datos.username}")
+        password_valid = verify_password(datos.password, usuario.password)
+        print(f"✅ Contraseña válida: {password_valid}")
+        
+        if not password_valid:
+            print(f"❌ Contraseña incorrecta para: {datos.username}")
+            raise HTTPException(status_code=401, detail="Credenciales incorrectas")
 
-    usuario = db.query(Usuario).filter(
-        Usuario.username == datos.username
-    ).first()
+        if not usuario.activo:
+            print(f"❌ Usuario inactivo: {datos.username}")
+            raise HTTPException(status_code=403, detail="Usuario desactivado")
 
-    if not usuario or not verify_password(datos.password, usuario.password):
-        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-
-    if not usuario.activo:
-        raise HTTPException(status_code=403, detail="Usuario desactivado")
-
-    token = create_access_token({
-        "sub": usuario.username,
-        "rol": usuario.rol
-    })
-
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "rol": usuario.rol
-    }
+        token = create_access_token({
+            "sub": usuario.username,
+            "rol": usuario.rol
+        })
+        
+        print(f"✅ Login exitoso para: {datos.username}")
+        
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "rol": usuario.rol
+        }
+    except Exception as e:
+        print(f"❌ Error en login: {str(e)}")
+        raise e
 
 
 # ---------------- REGISTER ----------------
