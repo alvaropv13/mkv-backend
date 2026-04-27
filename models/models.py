@@ -39,8 +39,8 @@ class Maquina(Base):
     foto = Column(String(255), nullable=True)
     id_venta = Column(Integer, ForeignKey("maquinaria.venta.id_venta"))
 
-    componentes = relationship("Componente", back_populates="maquina", cascade="all, delete-orphan")
-    incidencias = relationship("Incidencia", back_populates="maquina", cascade="all, delete-orphan")
+    # componentes = relationship("Componente", back_populates="maquina", cascade="all, delete-orphan")
+    # incidencias = relationship("Incidencia", back_populates="maquina", cascade="all, delete-orphan")
     # venta = relationship("Venta", back_populates="maquinas")
 
 
@@ -62,8 +62,8 @@ class Componente(Base):
     dias_garantia = Column(Integer, nullable=True)
     observaciones = Column(Text)
 
-    maquina = relationship("Maquina", back_populates="componentes")
-    intervenciones = relationship("Intervencion", back_populates="componente")
+    # maquina = relationship("Maquina", back_populates="componentes")
+    # intervenciones = relationship("Intervencion", back_populates="componente")
 
 
 # ------------------ INCIDENCIA ------------------
@@ -77,7 +77,7 @@ class Incidencia(Base):
     fecha = Column(Date)
     estado = Column(String(50))
 
-    maquina = relationship("Maquina", back_populates="incidencias")
+    # maquina = relationship("Maquina", back_populates="incidencias")
 
 
 # ------------------ SERVICIO ------------------
@@ -106,7 +106,7 @@ class Importe(Base):
     total = Column(DECIMAL(12,2))
     fecha_pago = Column(Date)
 
-    venta = relationship("Venta", back_populates="importes")
+    # venta = relationship("Venta", back_populates="importes")
 
 
 # ------------------ INTERVENCION ------------------
@@ -119,4 +119,4 @@ class Intervencion(Base):
     fecha = Column(Date, nullable=False)
     descripcion = Column(Text, nullable=False)
 
-    componente = relationship("Componente", back_populates="intervenciones")
+    # componente = relationship("Componente", back_populates="intervenciones")
