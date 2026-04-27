@@ -17,8 +17,8 @@ class Venta(Base):
     observaciones = Column(Text)
 
     # maquinas = relationship("Maquina", back_populates="venta")
-    servicios = relationship("Servicio", back_populates="venta")
-    importes = relationship("Importe", back_populates="venta")
+    # servicios = relationship("Servicio", back_populates="venta")
+    # importes = relationship("Importe", back_populates="venta")
 
 
 # ------------------ MAQUINA ------------------
@@ -41,7 +41,7 @@ class Maquina(Base):
 
     componentes = relationship("Componente", back_populates="maquina", cascade="all, delete-orphan")
     incidencias = relationship("Incidencia", back_populates="maquina", cascade="all, delete-orphan")
-    venta = relationship("Venta", back_populates="maquinas")
+    # venta = relationship("Venta", back_populates="maquinas")
 
 
 # ------------------ COMPONENTE ------------------
@@ -91,7 +91,7 @@ class Servicio(Base):
     precio = Column(DECIMAL(10,2))
     observaciones = Column(Text)
 
-    venta = relationship("Venta", back_populates="servicios")
+    # venta = relationship("Venta", back_populates="servicios")
 
 
 # ------------------ IMPORTE ------------------
