@@ -31,7 +31,7 @@ from schemas.schemas import (
 from fastapi.middleware.cors import CORSMiddleware
 
 # ---------------- CREAR TABLAS ----------------
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API MKV Spain")
 
