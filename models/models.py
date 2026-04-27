@@ -16,7 +16,7 @@ class Venta(Base):
     fin_garantia = Column(Date)
     observaciones = Column(Text)
 
-    maquinas = relationship("Maquina", back_populates="venta")
+    # maquinas = relationship("Maquina", back_populates="venta")
     servicios = relationship("Servicio", back_populates="venta")
     importes = relationship("Importe", back_populates="venta")
 
